@@ -5,6 +5,6 @@ const checkToken = require("../helpers/middlewares/checkToken");
 addressRouter.get("/", checkToken, addressController.getAddressByUser);
 // addressRouter.get("/:id", checkToken, addressController.getAddressById);
 addressRouter.post("/", checkToken, addressController.addAddress);
-addressRouter.put("/:id", checkToken, addressController.updateAddress);
+addressRouter.patch("/:id", checkToken, addressController.updateAddress);
 
 module.exports = addressRouter;

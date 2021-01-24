@@ -77,12 +77,37 @@ module.exports = {
               const secret = process.env.SECRET_KEY;
               // const token = jwt.sign({email: data[0].email, level_id : data[0].level_id} , secret);
               const token = jwt.sign(payload, secret);
-              resolve({token, full_name:data[0].full_name, email: data[0].email, id: data[0].id});
+              // resolve({token, full_name:data[0].full_name, email: data[0].email, id: data[0].id, });
+              resolve({token, full_name:data[0].full_name, email: data[0].email, user_id: data[0].id, level: data[0].level_id});
+
               // console.log({id: data[0].id});
             }
           });
         }
       });
     });
+  },
+
+  postLogout: (whitelisttoken) => {
+    return new Promise((resolve, reject) => {
+      const queryString = "DELETE FROM token_whitelist WHERE token=?";
+      db.query(queryString, whitelisttoken, (err, data) => {
+        if(data.affectedRows === 0) {
+          reject({
+            status: 404,
+            msg: "token tidak ditemukan, login gagal",
+          });
+        }
+        if (!err) {
+          resolve({
+            msg: `Logout berhasil`,
+          });
+        } else {
+          reject({
+            msg: `Logout gagal`
+          });
+        }
+      })
+    })
   },
 };

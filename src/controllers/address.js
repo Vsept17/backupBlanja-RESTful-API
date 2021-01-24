@@ -74,4 +74,27 @@ module.exports = {
         form.error(res, err);
       });
   },
+
+  deleteAddress: (req, res) => {
+    const { id } = req.params;
+    const user_id = req.decodedToken.id
+    addressModel.deleteAddress(id, user_id)
+    .then((data) => {
+      if (data.affectedRows === 0) {
+        res.status(404).json({
+          msg: "Data not found",
+          status: 404,
+        })
+      } else {
+        const newResObj = {
+          msg: " Data deleted",
+          status: 200,
+        }
+        res.json(newResObj);
+      }
+    })
+    .catch((err) => {
+      form.error(res, err);
+    })
+  }
 };
